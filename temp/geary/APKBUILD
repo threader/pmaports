@@ -1,0 +1,68 @@
+# Forked from upstream
+pkgname=geary
+pkgver=3.39_git20201025
+pkgrel=0
+pkgdesc="Geary is an email application built around conversations"
+url="https://wiki.gnome.org/Apps/Geary"
+# libhandy is not available on s390x or mips
+arch="all !s390x !mips !mips64"
+license="LGPL-2.1-or-later AND CC-BY-3.0 AND BSD-2-Clause"
+depends="iso-codes dbus:org.freedesktop.Secrets"
+makedepends="
+	appstream-glib-dev
+	enchant2-dev
+	folks-dev
+	gcr-dev
+	glib-dev
+	gmime-dev
+	gnome-online-accounts-dev
+	gsound-dev
+	gspell-dev
+	gtk+3.0-dev
+	iso-codes-dev
+	itstool
+	json-glib-dev
+	libcanberra-dev
+	libgee-dev
+	libhandy-dev
+	libhandy1-dev
+	libnotify-dev
+	libpeas-dev
+	libsecret-dev
+	libstemmer-dev
+	libxml2-dev
+	meson
+	sqlite-dev
+	vala
+	webkit2gtk-dev
+	ytnef-dev
+	"
+checkdepends="xvfb-run desktop-file-utils ibus"
+options="!check" # https://gitlab.gnome.org/GNOME/geary/-/issues/776
+subpackages="$pkgname-lang $pkgname-doc"
+_commit="b17c85dc792ae06f7f62b066b9f5ec4a6f1e6565"
+source="
+	https://source.puri.sm/Librem5/$pkgname/-/archive/$_commit/$pkgname-$_commit.tar.gz
+	0001-fix-pkgconfig-finding-enchant-2.patch
+	"
+
+builddir=$srcdir/$pkgname-$_commit
+
+build() {
+	abuild-meson \
+		-Dlibunwind=disabled \
+		-Dprofile=release \
+		. output
+	meson compile ${JOBS:+-j ${JOBS}} -C output
+}
+
+check() {
+	xvfb-run meson test --no-rebuild -v -C output
+}
+
+package() {
+	DESTDIR="$pkgdir" meson install --no-rebuild -C output
+}
+
+sha512sums="1d901ae519a3b550e72de2e48dd0dda04675cc8cfca5d9e9898dadf7a2c1aa6e5896716b412825787bbdcc641b45ad0494833b171ceb48b960f54fd42790ae44  geary-b17c85dc792ae06f7f62b066b9f5ec4a6f1e6565.tar.gz
+d7cff7458991883414302ea8a6e2c506be6413299081f4e6ffb0dcb6408e4b11f999b284dab90dfb487299eba3f872ed1eb0cc2cd7c1dd13b05e334bb7f2cbf7  0001-fix-pkgconfig-finding-enchant-2.patch"
