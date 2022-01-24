@@ -20,8 +20,9 @@ setup_firmware_path
 
 setup_mdev
 setup_dynamic_partitions "${deviceinfo_super_partitions:=}"
-mount_subpartitions
 setup_framebuffer
+show_splash "Loading..."
+mount_subpartitions
 
 # Hooks
 for hook in /etc/postmarketos-mkinitfs/hooks/*.sh; do
@@ -36,7 +37,6 @@ setup_usb_network
 start_unudhcpd
 
 mount_boot_partition /boot
-show_splash_loading
 extract_initramfs_extra /boot/initramfs-extra
 # charging-sdl does not work properly at the moment, so skip it.
 # See also https://gitlab.com/postmarketOS/pmaports/-/issues/1064
