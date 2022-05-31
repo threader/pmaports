@@ -1,0 +1,110 @@
+# Forked from Alpine INSERT-REASON-HERE (CHANGEME!)
+
+pkgname=gnome-shell
+pkgver=999
+pkgrel=0
+pkgdesc="GNOME shell"
+url="https://wiki.gnome.org/Projects/GnomeShell"
+arch="all !s390x !riscv64" # rust
+license="GPL-2.0-or-later"
+depends="
+	accountsservice
+	caribou
+	elogind
+	gsettings-desktop-schemas
+	gst-plugins-good
+	upower
+	ibus
+	librsvg
+	gnome-bluetooth
+	gnome-control-center
+	gnome-shell-schemas
+	font-adobe-source-code-pro
+	ttf-cantarell
+	adwaita-icon-theme
+	gnome-themes-standard
+	unzip
+	"
+makedepends="
+	gnome-desktop-dev>=3.35.91
+	libxml2-dev
+	libcanberra-dev
+	gobject-introspection-dev
+	startup-notification-dev
+	libsoup-dev
+	polkit-dev
+	git
+	gcr-dev
+	gjs-dev>=1.64.0
+	mutter-dev>=3.36.0
+	pulseaudio-dev
+	evolution-data-server-dev evolution-dev
+	python3
+	meson
+	libxml2-utils
+	ibus-dev
+	sassc
+	networkmanager-dev
+	libnma-dev
+	gnome-control-center-dev
+	py3-setuptools
+	gnome-bluetooth-dev
+	gstreamer-dev
+	gnome-autoar-dev
+	asciidoc
+	elogind-dev
+	pipewire-dev
+	gtk4.0-dev
+	"
+checkdepends="
+	xvfb-run
+	mesa-dri-gallium
+	"
+	# gdm is also needed but introduces circular dep
+subpackages="$pkgname-dbg $pkgname-doc $pkgname-lang $pkgname-schemas::noarch"
+_repo="gnome-shell"
+_commit="e0cf5f1a1656dc2cff36b483e15735ea890d4aac"
+source="$_repo-$_commit.tar.gz::https://gitlab.gnome.org/calebccff/$_repo/-/archive/$_commit/$_repo-$_commit.tar.gz
+	disable-telepathy-integration.patch"
+builddir="$srcdir/$_repo-$_commit"
+options="!check" # Tests have circular dependency 'gnome-shell <-> gdm'
+
+# secfixes:
+#   0:
+#     - CVE-2019-3820
+
+prepare() {
+	cd $builddir
+	git clone https://gitlab.gnome.org/GNOME/libgnome-volume-control subprojects/gvc
+	git -C subprojects/gvc reset --hard 7a621180b46421e356b33972e3446775a504139c
+}
+
+build() {
+	abuild-meson \
+		-Dsystemd=false \
+		-Dtests=false \
+		. output
+	meson compile ${JOBS:+-j ${JOBS}} -C output
+}
+
+check() {
+	xvfb-run meson test --no-rebuild -v -C output
+}
+
+schemas() {
+	pkgdesc="GNOME Shell gsetting schemas"
+	depends=""
+	replaces="gnome-shell"
+
+	amove usr/share/glib-2.0/schemas
+	amove usr/share/gnome-control-center/keybindings
+}
+
+package() {
+	DESTDIR="$pkgdir" meson install --no-rebuild -C output
+}
+
+sha512sums="
+b7b8b754622e48aeac4c1136323a4b820684a08b68d02a1f3ff292acfafa6098782fbce6f5312166be80e4a78b170d95fba953b74b877dcb3cf90fa7c87553e2  gnome-shell-e0cf5f1a1656dc2cff36b483e15735ea890d4aac.tar.gz
+2ca70115fab957fdf276b7f0772786e1afd56b0b22bcfd92f5b5f1d29676dc97c19cfb079434d0dbf7b459f1d133dbd8d1faa0d88f7b94846040a23856f951f8  disable-telepathy-integration.patch
+"

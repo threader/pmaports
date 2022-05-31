@@ -1,0 +1,110 @@
+# Forked from Alpine INSERT-REASON-HERE (CHANGEME!)
+
+pkgname=mutter
+pkgver=999
+pkgrel=0
+pkgdesc="clutter-based window manager and compositor"
+url="https://wiki.gnome.org/Projects/Mutter/"
+arch="all !s390x !riscv64" # limited by gnome-settings-daemon -> rust
+license="GPL-2.0-or-later"
+depends="
+	gnome-settings-daemon
+	gsettings-desktop-schemas
+	mutter-schemas
+	xkeyboard-config
+	xwayland
+	zenity
+	"
+makedepends="
+	atk-dev
+	cairo-dev
+	dbus-dev
+	elogind-dev
+	eudev-dev
+	fribidi-dev
+	gdk-pixbuf-dev
+	glib-dev
+	gnome-desktop-dev
+	gnome-settings-daemon-dev
+	gobject-introspection-dev
+	graphene-dev
+	gtk+3.0-dev
+	json-glib-dev
+	libcanberra-dev
+	libdrm-dev
+	libgudev-dev
+	libice-dev
+	libinput-dev
+	libsm-dev
+	libwacom-dev
+	libx11-dev
+	libxau-dev
+	libxcb-dev
+	libxcomposite-dev
+	libxcursor-dev
+	libxdamage-dev
+	libxext-dev
+	libxfixes-dev
+	libxi-dev
+	libxinerama-dev
+	libxkbcommon-dev
+	libxkbfile-dev
+	libxrandr-dev
+	libxrender-dev
+	libxtst-dev
+	mesa-dev
+	meson
+	pango-dev
+	pipewire-dev
+	startup-notification-dev
+	wayland-dev
+	wayland-protocols
+	xorg-server
+	"
+options="!check" # Can't be run with release builds
+subpackages="$pkgname-dbg $pkgname-dev $pkgname-doc $pkgname-lang $pkgname-schemas::noarch"
+_repo="mutter"
+_commit="b7555238fd32073d562a88a621efa83a9f9a8a9f"
+source="$_repo-$_commit.tar.gz::https://gitlab.gnome.org/calebccff/$_repo/-/archive/$_commit/$_repo-$_commit.tar.gz
+	fixudev-req.patch"
+builddir="$srcdir/$_repo-$_commit"
+
+prepare() {
+	echo "pwd is $PWD, builddir is $builddir"
+	default_prepare
+	# disable test subdirs, causes looping on builders and we don't run
+	# tests anyway
+	sed -e '/subdir/d' -i cogl/tests/meson.build
+}
+
+build() {
+	abuild-meson \
+		-Degl_device=true \
+		-Dudev=true \
+		-Dnative_backend=true \
+		-Dintrospection=true \
+		-Dxwayland_path=/usr/bin/Xwayland \
+		-Dremote_desktop=true \
+		-Dprofiler=false \
+		-Dtests=false \
+		. output
+	meson compile ${JOBS:+-j ${JOBS}} -C output
+}
+
+schemas() {
+	pkgdesc="Mutter schemas related files"
+	depends=""
+
+	amove usr/share/glib-2.0/schemas
+	amove usr/share/GConf/gsettings
+	amove usr/share/gnome-control-center/keybindings
+}
+
+package() {
+	DESTDIR="$pkgdir" meson install --no-rebuild -C output
+}
+
+sha512sums="
+d90db0814c85fbaa2a4ff0aafa32f8322bf645d34969b20e94fcd1d09a85c66861fa21a1bfdf1d842b69ce3ea7132374947d031372bdb418c65d642245a7b0a4  mutter-b7555238fd32073d562a88a621efa83a9f9a8a9f.tar.gz
+6f21171bbd0ad0fc67cbaf5fb1478b22b482a9ae33b9328cc51a5dd31bcf7d95cd41e6cbbac21d3d8801cc064a62a64ae38ed7d0501ab605b861058c32f3bc30  fixudev-req.patch
+"
