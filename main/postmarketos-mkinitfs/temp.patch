@@ -1,0 +1,21 @@
+diff --git a/main.go b/main.go
+index 8c5fde2..98691ac 100644
+--- a/main.go
++++ b/main.go
+@@ -458,6 +458,7 @@ func getInitfsFiles(files misc.StringSet, devinfo deviceinfo.DeviceInfo) error {
+ 		"/bin/busybox-extras": false,
+ 		"/usr/sbin/telnetd":   false,
+ 		"/sbin/kpartx":        false,
++		"/sbin/switch_root":   false,
+ 		"/etc/deviceinfo":     false,
+ 		"/usr/bin/unudhcpd":   false,
+ 	}
+@@ -636,7 +637,7 @@ func generateInitfs(name string, path string, kernVer string, devinfo deviceinfo
+ 
+ 	requiredDirs := []string{
+ 		"/bin", "/sbin", "/usr/bin", "/usr/sbin", "/proc", "/sys",
+-		"/dev", "/tmp", "/lib", "/boot", "/sysroot", "/etc",
++		"/dev", "/run", "/tmp", "/lib", "/boot", "/sysroot", "/etc",
+ 	}
+ 	for _, dir := range requiredDirs {
+ 		initfsArchive.Dirs[dir] = false
