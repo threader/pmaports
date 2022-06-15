@@ -1,52 +1,42 @@
 # Maintainer: Oliver Smith <ollieparanoid@postmarketos.org>
 pkgname=postmarketos-ondev
-pkgver=0.7.4
-pkgrel=1
-pkgdesc="Calamares based on-device installer"
-url="https://postmarketos.org"
-# armhf blocked by qt5-qtdeclarative
-arch="all !armhf"
+pkgver=2.0.0
+pkgrel=0
+pkgdesc="Next-gen on-device installer (pmOS specific build)"
+url="https://gitlab.com/postmarketOS/ondev2/"
+arch="all"
 license="GPL-3.0-or-later"
 depends="
+	$pkgname-lang
 	$pkgname-openrc
-	calamares
-	calamares-extensions-brand-default-mobile
-	calamares-extensions-mod-mobile
-	calamares-mod-mount
-	calamares-mod-shellprocess
-	calamares-mod-unpackfs
-	dbus
-	dbus-openrc
-	e2fsprogs
-	elogind
-	elogind-openrc
 	haveged
 	haveged-openrc
-	i3wm
-	kirigami2
 	losetup
-	mesa-egl
-	qt5-qtvirtualkeyboard
-	qtvirtualkeyboard-plasma
-	tinydm
-	tinydm-openrc
-	ttf-dejavu
-	unclutter-xfixes
-	util-linux-misc
-	xf86-input-libinput
-	xf86-video-fbdev
-	xorg-server
-	xset
+	tmux
 	"
-subpackages="$pkgname-openrc"
+subpackages="$pkgname-openrc $pkgname-lang"
 install="$pkgname.post-install"
-source="https://gitlab.com/postmarketOS/postmarketos-ondev/-/archive/$pkgver/postmarketos-ondev-$pkgver.tar.gz"
+source="https://gitlab.com/postmarketOS/ondev2/-/archive/$pkgver/ondev2-$pkgver.tar.gz"
 options="!check"  # has no tests
+makedepends="
+	eudev-dev
+	gettext-tiny
+	inih-dev
+	libdrm-dev
+	libinput-dev
+	libxkbcommon-dev
+	linux-headers
+	musl-libintl
+	pkgconf
+"
+
+build() {
+	make ${JOBS:+-j ${JOBS}}
+}
 
 package() {
-	make DESTDIR="$pkgdir" install
+	make DESTDIR="$pkgdir" install-postmarketOS
 }
 
 sha512sums="
-57abb9c22a9eddf6369dcb96b5a86e518d3f10396b622b5358e718eec898fff1c133f30bb55471d0615eaa69b835679dbece336221f3ea17f5cef5a7a904bd9c  postmarketos-ondev-0.7.4.tar.gz
 "
