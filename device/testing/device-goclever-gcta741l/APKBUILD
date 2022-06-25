@@ -3,7 +3,7 @@
 pkgname=device-goclever-gcta741l
 pkgdesc="GoClever Orion 70L"
 pkgver=0.2
-pkgrel=1
+pkgrel=2
 url="https://postmarketos.org"
 license="MIT"
 arch="armv7"
@@ -46,7 +46,7 @@ package() {
 		"$pkgdir"/boot/boot.scr
 
 	# Device Tree - temporary workaround: copy from kernel package
-	install -Dm644 /usr/share/dtb/sun6i-a31s-goclever-gcta741l.dtb \
+	install -Dm644 /boot/dtbs/sun6i-a31s-goclever-gcta741l.dtb \
 		"$pkgdir"/boot/dtbs-postmarketos-allwinner/sun6i-a31s-goclever-gcta741l.dtb
 }
 

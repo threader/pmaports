@@ -4,7 +4,7 @@
 _flavor="postmarketos-qcom-sdm660"
 pkgname=linux-$_flavor
 pkgver=5.17.0
-pkgrel=0
+pkgrel=1
 pkgdesc="Close to mainline linux kernel for Qualcomm Snapdragon 660 SoC"
 arch="aarch64"
 url="https://kernel.org/"
@@ -51,7 +51,7 @@ package() {
 		ARCH="$_carch" \
 		INSTALL_MOD_PATH="$pkgdir" \
 		INSTALL_MOD_STRIP=1 \
-		INSTALL_DTBS_PATH="$pkgdir/usr/share/dtb"
+		INSTALL_DTBS_PATH="$pkgdir/boot/dtbs"
 }
 
 sha512sums="

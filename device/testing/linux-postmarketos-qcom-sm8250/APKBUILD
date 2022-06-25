@@ -4,7 +4,7 @@
 _flavor="postmarketos-qcom-sm8250"
 pkgname=linux-$_flavor
 pkgver=5.18.0_rc6
-pkgrel=0
+pkgrel=1
 pkgdesc="Mainline kernel fork for SM8250"
 arch="aarch64"
 _carch="arm64"
@@ -56,7 +56,7 @@ package() {
 		ARCH="$_carch" \
 		INSTALL_MOD_STRIP=1 \
 		INSTALL_MOD_PATH="$pkgdir" \
-		INSTALL_DTBS_PATH="$pkgdir/usr/share/dtb" \
+		INSTALL_DTBS_PATH="$pkgdir/boot/dtbs" \
 		modules_install dtbs_install
 }
 

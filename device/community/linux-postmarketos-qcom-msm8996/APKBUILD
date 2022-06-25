@@ -4,7 +4,7 @@
 _flavor="postmarketos-qcom-msm8996"
 pkgname=linux-$_flavor
 pkgver=5.18.1
-pkgrel=0
+pkgrel=1
 pkgdesc="Kernel close to mainline with extra patches for Qualcomm MSM8996 devices"
 arch="aarch64"
 _carch="arm64"
@@ -50,7 +50,7 @@ package() {
 		ARCH="$_carch" \
 		INSTALL_MOD_PATH="$pkgdir" \
 		INSTALL_MOD_STRIP=1 \
-		INSTALL_DTBS_PATH="$pkgdir"/usr/share/dtb
+		INSTALL_DTBS_PATH="$pkgdir"/boot/dtbs
 }
 sha512sums="
 909d9735623b9cf20e1efa735e520eed579751bcbb45f95821d489d993424c8ac3699f3fdbdd339c70188acb5b6315fee4a7dd9087f098e5dc23c1498277cc56  linux-v5.18.1-msm8996.tar.gz

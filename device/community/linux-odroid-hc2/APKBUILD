@@ -4,7 +4,7 @@
 
 pkgname=linux-odroid-hc2
 pkgver=5.18.1
-pkgrel=0
+pkgrel=1
 pkgdesc="ODROID XU3/XU4/HC1/HC2/MC1 kernel fork"
 arch="armv7"
 _carch="arm"
@@ -56,7 +56,7 @@ package() {
 		ARCH="$_carch" \
 		INSTALL_MOD_STRIP=1 \
 		INSTALL_MOD_PATH="$pkgdir" \
-		INSTALL_DTBS_PATH="$pkgdir/usr/share/dtb"
+		INSTALL_DTBS_PATH="$pkgdir/boot/dtbs"
 }
 
 dev() {

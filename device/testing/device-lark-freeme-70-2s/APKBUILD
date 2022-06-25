@@ -3,7 +3,7 @@
 pkgname=device-lark-freeme-70-2s
 pkgdesc="Lark FreeMe 70.2S"
 pkgver=0.2
-pkgrel=1
+pkgrel=2
 url="https://postmarketos.org"
 license="MIT"
 arch="armv7"
@@ -46,7 +46,7 @@ package() {
 		"$pkgdir"/boot/boot.scr
 
 	# Device Tree - temporary workaround: copy from kernel package
-	install -Dm644 /usr/share/dtb/sun4i-a10-lark-freeme-70-2s.dtb \
+	install -Dm644 /boot/dtbs/sun4i-a10-lark-freeme-70-2s.dtb \
 		"$pkgdir"/boot/dtbs-postmarketos-allwinner/sun4i-a10-lark-freeme-70-2s.dtb
 }
 

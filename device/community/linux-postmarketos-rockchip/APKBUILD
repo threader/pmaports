@@ -11,7 +11,7 @@
 
 pkgname=linux-postmarketos-rockchip
 pkgver=5.18
-pkgrel=2
+pkgrel=3
 pkgdesc="Mainline kernel for rockchip devices"
 arch="aarch64 armv7"
 _flavor="${pkgname#linux-}"
