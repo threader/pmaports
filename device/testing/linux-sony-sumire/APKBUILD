@@ -20,13 +20,12 @@ if [ "${CC:0:5}" != "gcc4-" ]; then
 fi
 
 # Source
-_repository="android_kernel_sony_msm8994"
-_commit="0c7176b039b6deeecdd31ceea97b39910393a563"
+_repository="android_kernel_sony_msm8994_rework"
+_commit="e5a2f1d02c4b51548322e909777d17fa902e3797"
 _config="config-$_flavor.$arch"
 source="
-	$pkgname-$_commit.tar.gz::https://github.com/LineageOS/$_repository/archive/$_commit.tar.gz
+	$pkgname-$_commit.tar.gz::https://github.com/threader/$_repository/archive/$_commit.tar.gz
 	$_config
-	gcc10-extern_YYLOC_global_declaration.patch
 "
 builddir="$srcdir/$_repository-$_commit"
 
@@ -45,6 +44,6 @@ package() {
 	downstreamkernel_package "$builddir" "$pkgdir" "$_carch" "$_flavor"
 }
 
-sha512sums="789e9abdc5fd7e93ef3a80e332d045302f699adcef1e69c56a9798ac4cea01c9853170bfaf03ac7603f1f2d970cb723ced430a85b03dc602eab14a8a9876cb75  linux-sony-sumire-0c7176b039b6deeecdd31ceea97b39910393a563.tar.gz
+sha512sums="9ff801b6decb2dbac06fe46f900f1c17189fde48e50c324d6207e31db4b9034f732a4de09b5ecfc5866d35ac8eab97429db091c0939d07858b99ff50887f1775  linux-sony-sumire-c8a0d6ea632d65237c16f1301d666f795e97d18e.tar.gz
 416bb3b3b968b2ff7f5c5f076618247478e66644e00f1e8d24add378f485bdafc6fade5c9ca1c9f647e7df92cab9258be41ee1b9c3bee2a25c9a1a594cbabfd3  config-sony-sumire.aarch64
 2b48f1bf0e3f70703d2cdafc47d5e615cc7c56c70bec56b2e3297d3fa4a7a1321d649a8679614553dde8fe52ff1051dae38d5990e3744c9ca986d92187dcdbeb  gcc10-extern_YYLOC_global_declaration.patch"
