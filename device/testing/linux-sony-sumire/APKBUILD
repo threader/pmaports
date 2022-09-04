@@ -44,5 +44,5 @@ package() {
 	downstreamkernel_package "$builddir" "$pkgdir" "$_carch" "$_flavor"
 }
 
-sha512sums="9ff801b6decb2dbac06fe46f900f1c17189fde48e50c324d6207e31db4b9034f732a4de09b5ecfc5866d35ac8eab97429db091c0939d07858b99ff50887f1775  linux-sony-sumire-98be53bc1a35d97bb14db61e37e7d6c11e3213b9.tar.gz
+sha512sums="9ff801b6decb2dbac06fe46f900f1c17189fde48e50c324d6207e31db4b9034f732a4de09b5ecfc5866d35ac8eab97429db091c0939d07858b99ff50887f1775  linux-sony-sumire-9cd337d9dc382d41169e2cac484368288e634cd4.tar.gz
 416bb3b3b968b2ff7f5c5f076618247478e66644e00f1e8d24add378f485bdafc6fade5c9ca1c9f647e7df92cab9258be41ee1b9c3bee2a25c9a1a594cbabfd3  config-sony-sumire.aarch64"
